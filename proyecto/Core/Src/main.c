@@ -51,7 +51,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+extern uint32_t asmSum(uint32_t * vector, uint32_t longitud);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -89,7 +89,8 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  uint32_t aValue = 2, otherValue = 3, sumResult =0;
+  sumResult = asmSum(aValue, otherValue);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -99,6 +100,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    __WFI();
   }
   /* USER CODE END 3 */
 }

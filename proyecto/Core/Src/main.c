@@ -51,7 +51,8 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-extern uint32_t asmSum(uint32_t * vector, uint32_t longitud);
+void zeroEnC(uint32_t *, uint32_t);
+extern uint32_t asmSum(uint32_t *, uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -216,6 +217,16 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void zeroEnC(uint32_t * vector, uint32_t longitud)
+{
+  uint32_t i;
+  i=0;
+  for(;i<longitud;)
+  {
+    vector[i]=0;
+    i++;
+  }
+}
 
 /* USER CODE END 4 */
 

@@ -31,13 +31,11 @@
  *
  */
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
-
-/** \addtogroup blink Bare-metal blink example
- ** @{ */
+#ifndef _SUMA_H_
+#define _SUMA_H_
 
 /*==================[inclusions]=============================================*/
+#include <stdint.h>
 
 /*==================[cplusplus]==============================================*/
 
@@ -47,23 +45,20 @@ extern "C" {
 
 /*==================[macros]=================================================*/
 
-/** delay in milliseconds */
-#define DELAY_MS 500
-
-/** led number to toggle */
-#define LED 0
-
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
 
-/** @brief main function
- * @return main function should never return
+/**
+ * Funcion que suma dos enteros de 32 bits y devuelve el resultado
+ * @param firstOperand primer sumando
+ * @param secondOperand segundo sumando
+ * @return suma
  */
-int main(void);
-
+extern void asmprodEsc32(uint32_t* vectorIn , uint32_t* vectorOut , uint32_t longitud , uint32_t escalar);
+extern void CprodEsc32(uint32_t* vectorIn , uint32_t* vectorOut , uint32_t longitud , uint32_t escalar);
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus

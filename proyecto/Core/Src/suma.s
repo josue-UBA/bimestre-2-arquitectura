@@ -49,13 +49,15 @@
 	 * es decir que podemos verlo desde otros modulos (equivalente a extern).
      * Definimos la rutina como global para que sea visible desde otros modulos.
      */
-	.global asmSum
+	.global asmprodEsc32
 	.type asmSum function
 
-#define vector r0
-#define longitud r1
-#define zero r2
-#define i r3
+#define vectorIn_r     r0
+#define vectorOut_r    r1
+#define longitud_r     r2
+#define escalar_r      r3
+#define indice_r       r4
+#define offset_reg	   r5
 
 	/**
 	 * Indicamos que la siguiente subrutina debe ser ensamblada en modo thumb,
@@ -74,19 +76,22 @@
  *	Si el resultado que retorna es en 64 bits, usa r0 y r1.
 */
 
-asmSum:
-push {lr}
-mov zero, 0
-mov i, 0
+
+asmprodEsc32:
+    push {lr}  /* guardamos la direccion de retorno en la pila */
+
+	mov	offset_reg,0
+	mov indice_r,0
 loop:
-str zero, [vector, i, lsl 2]
-add i, 1
-cmp i, longitud
-bne loop
-pop {pc}
-//    push {lr}  /* guardamos la direccion de retorno en la pila */
-//	add op1, op2 /* r0 = r0 + r1 */
-//	pop {pc}   /* retorno */
+	ldr	r6,[vectorIn_r,offset_reg]		// guardo en reg proposito general (r6) el dato guardado en memoria que apunta el puntero vectorIn_r
+	add	offset_reg,4					// incrementa el offset (offset_reg) para ir al siguiente elemento del vector vectorIn_r. SI es de 16 bits, sería incrementar 2 y si es de 8 bits sería de incrementar 1
+	mul	r6,r6,escalar_r 				// r6 = r6 * escalar_r
+	str	r6,[vectorOut_r,indice_r, LSL 2]// guarda en vectorOut_r[indice_r] el contenido de r6 con offset de reg de 32 bits
+	add indice_r,1		//indice_r = indice_r + 1
+	cmp	indice_r,longitud_r	// longitud_r - indice_r
+	bne	loop //si la operacion anterior no es igual (not equal), salta a la etiqueta loop. Si son iguales, no salta.
+
+	pop {pc}   /* retorno al main */
 
 	/* otras alternativas para el retorno */
 	/* 1. mov pc,lr

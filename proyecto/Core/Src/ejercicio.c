@@ -1,9 +1,9 @@
 #include "ejercicio.h"
-void zerosEnC(uint32_t * vector, uint32_t longitud){
-	uint32_t i;
-	i=0;
-	for(;i<longitud;i++)
+
+void CprodEsc32(uint32_t* vectorIn , uint32_t* vectorOut , uint32_t longitud , uint32_t escalar)
+{
+	for(uint8_t i = 0 ; i < longitud ; i++)
 	{
-		vector[i]=0;
+		vectorOut[i] = vectorIn[i]*escalar;
 	}
 }

@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "prodEsc32.h"
+#include "ejercicio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

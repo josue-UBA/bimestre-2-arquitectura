@@ -90,15 +90,13 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  uint32_t CvectorIn[10] = {1,1,1,1,1,1,1,1,1,1};
-  uint32_t CvectorOut[10];
-  uint32_t ASMvectorIn[10] = {1,1,1,1,1,1,1,1,1,1};;
-  uint32_t ASMvectorOut[10];
+  uint32_t vectorIn[10] = {1,1,1,1,1,1,1,1,1,1};
+  uint32_t vectorOut[10] ={0,0,0,0,0,0,0,0,0,0};
   uint32_t largo = 10;
-  uint32_t multip = 2;
+  uint32_t multip = 5;
 
-  CprodEsc32(CvectorIn , CvectorOut , largo , multip);
-  asmprodEsc32(ASMvectorIn , ASMvectorOut , largo , multip);
+  //CprodEsc32(vectorIn , vectorOut , largo , multip);
+  asmprodEsc32(vectorIn , vectorOut , largo , multip);
   /* USER CODE END 2 */
 
   /* Infinite loop */

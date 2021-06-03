@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "ejercicio.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,12 +51,25 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-extern uint32_t ejercicio_s(uint16_t* vectorIn , uint16_t* vectorOut , uint16_t longitud , uint16_t escalar);
+extern void ejercicio_s(uint16_t* vectorIn , uint16_t* vectorOut , uint16_t longitud , uint16_t escalar);
+void ejercicio_c(uint16_t* vectorIn , uint16_t* vectorOut , uint16_t longitud , uint16_t escalar);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void ejercicio_c(uint16_t* vectorIn , uint16_t* vectorOut , uint16_t longitud , uint16_t escalar)
+{
+  int a0 = 0;
+  for (uint16_t i = 0 ; i< longitud ; i++)
+  {
+    vectorOut[i] = escalar*vectorIn[i];
+    a0 = vectorOut[i];
+    if(vectorOut[i] > 4095)
+    {
+      vectorOut[i] = 4095;
+    }
+  }
+}
 /* USER CODE END 0 */
 
 /**
@@ -90,14 +103,12 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  uint16_t CvectorIn[10] = {6000,1,1,1,1,1,1,1,1,1};
-  uint16_t CvectorOut[10];
-  uint16_t ASMvectorIn[10] = {6000,1,1,1,1,1,1,1,1,1};;
-  uint16_t ASMvectorOut[10];
+  uint16_t vectorIn[10] = {6000,1,1,1,1,1,1,1,1,1};
+  uint16_t vectorOut[10];
   uint16_t largo = 10;
   uint16_t multip = 2;
-  //ejercicio_c(CvectorIn , CvectorOut , largo , multip);
-  ejercicio_s(ASMvectorIn , ASMvectorOut , largo , multip);
+  //ejercicio_c(vectorIn , vectorOut , largo , multip);
+  //ejercicio_s(vectorIn , vectorOut , largo , multip);
 
   /* USER CODE END 2 */
 

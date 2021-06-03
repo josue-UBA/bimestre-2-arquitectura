@@ -50,14 +50,15 @@
      * Definimos la rutina como global para que sea visible desde otros modulos.
      */
 	.global asmprodEsc32
-	.type asmSum function
+//	.type asmSum function
 
-#define vectorIn_r     r0
-#define vectorOut_r    r1
-#define longitud_r     r2
-#define escalar_r      r3
-#define indice_r       r4
-#define offset_reg	   r5
+#define vectorIn 		r0
+#define vectorOut 		r1
+#define longitud 		r2
+#define escalar 		r3
+#define indice			r4
+#define reg_buffer 		r5
+#define indice_vector 	r6
 
 	/**
 	 * Indicamos que la siguiente subrutina debe ser ensamblada en modo thumb,
@@ -76,24 +77,19 @@
  *	Si el resultado que retorna es en 64 bits, usa r0 y r1.
 */
 
+asmprodEsc12:
+    push {r4-r6,lr}  /* guardamos la direccion de retorno en la pila */
 
-asmprodEsc32:
-    push {lr}  /* guardamos la direccion de retorno en la pila */
+    MOV indice_vector,0
+    MOV indice,0
 
-	mov	offset_reg,0
-	mov indice_r,0
 loop:
-	ldr	r6,[vectorIn_r,offset_reg]      // guardo en reg proposito general (r6) el dato guardado en memoria que apunta el puntero vectorIn_r
-	add	offset_reg,2                    // incrementa el offset (offset_reg) para ir al siguiente elemento del vector vectorIn_r. SI es de 16 bits, sería incrementar 2 y si es de 8 bits serÃ­a de incrementar 1
-	mul	r6,r6,escalar_r                 // r6 = r6 * escalar_r
-	str	r6,[vectorOut_r,indice_r, LSL 1]// guarda en vectorOut_r[indice_r] el contenido de r6 con offset de reg de 32 bits
-	add indice_r,1                      // indice_r = indice_r + 1
-	cmp	indice_r,longitud_r             // longitud_r - indice_r
-	bne	loop                            // si la operacion anterior no es igual (not equal), salta a la etiqueta loop. Si son iguales, no salta.
+    LDRH 	reg_buffer,[vectorIn,indice_vector, LSL 1]
+	MUL		reg_buffer,reg_buffer, escalar
+	USAT	reg_buffer,#12,reg_buffer
+   	STRH	reg_buffer, [vectorOut, indice_vector, LSL 1]
+   	ADD		indice_vector, 1
+   	CMP 	indice_vector,longitud
+   	BNE 	loop
+	POP {r4-r6,pc}   /* retorno */
 
-	pop {pc}   /* retorno al main */
-
-	/* otras alternativas para el retorno */
-	/* 1. mov pc,lr
-	/  2. bx lr */
-	/* pop {pc} */

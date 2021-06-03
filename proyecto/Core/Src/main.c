@@ -22,7 +22,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,12 +50,19 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-extern uint32_t asmSum(uint32_t * vector, uint32_t longitud);
+extern void asmSum(uint32_t *, uint32_t);
+void ejercicio_c(uint32_t*, uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void ejercicio_c(uint32_t* vector, uint32_t longi)
+{
+	for(uint32_t i = 0 ; i < longi ; i++)
+	{
+		vector[i] = 0;
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -89,8 +95,12 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  uint32_t aValue = 2, otherValue = 3, sumResult =0;
-  sumResult = asmSum(aValue, otherValue);
+  uint32_t vector[10];
+  uint32_t longitud = 10;
+
+  asmSum(vector, longitud);
+  //ejercicio_c(vector, longitud);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */

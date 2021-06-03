@@ -1,9 +1,9 @@
 proyecto/STM32F401RETX_FLASH.ld
 proyecto/STM32F401RETX_RAM.ld
-proyecto/.cproject
-proyecto/.project
-proyecto/.mxproject
 proyecto/.settings/
 proyecto/.settings/language.settings.xml
 proyecto/Debug/
 proyecto/proyec Debug.launch
+proyecto/.cproject
+proyecto/.mxproject
+proyecto/.project

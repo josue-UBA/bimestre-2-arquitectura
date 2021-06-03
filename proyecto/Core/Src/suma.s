@@ -75,15 +75,15 @@
 */
 
 asmSum:
-push {lr}
-mov zero, 0
-mov i, 0
+	push {lr}
+	mov zero, 0
+	mov i, 0
 loop:
-str zero, [vector, i, lsl 2]
-add i, 1
-cmp i, longitud
-bne loop
-pop {pc}
+	str zero, [vector, i, lsl 2]
+	add i, 1
+	cmp i, longitud
+	bne loop
+	pop {pc}
 //    push {lr}  /* guardamos la direccion de retorno en la pila */
 //	add op1, op2 /* r0 = r0 + r1 */
 //	pop {pc}   /* retorno */

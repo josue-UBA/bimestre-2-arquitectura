@@ -87,9 +87,9 @@ loop:
 	add	offset_reg,4                    // incrementa el offset (offset_reg) para ir al siguiente elemento del vector vectorIn_r. SI es de 16 bits, sería incrementar 2 y si es de 8 bits sería de incrementar 1
 	mul	r6,r6,escalar_r                 // r6 = r6 * escalar_r
 	str	r6,[vectorOut_r,indice_r, lsl 2]// guarda en vectorOut_r[indice_r] el contenido de r6 con offset de reg de 32 bits
-	add indice_r,1                      //indice_r = indice_r + 1
+	add indice_r,1                      // indice_r = indice_r + 1
 	cmp	indice_r,longitud_r             // longitud_r - indice_r
-	bne	loop                            //si la operacion anterior no es igual (not equal), salta a la etiqueta loop. Si son iguales, no salta.
+	bne	loop                            // si la operacion anterior no es igual (not equal), salta a la etiqueta loop. Si son iguales, no salta.
 
 	pop {pc}   /* retorno al main */
 

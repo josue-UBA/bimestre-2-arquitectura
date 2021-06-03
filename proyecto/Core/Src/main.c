@@ -53,12 +53,17 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 extern void asmprodEsc32(uint32_t* vectorIn , uint32_t* vectorOut , uint32_t longitud , uint32_t escalar);
 void CprodEsc32(uint32_t* vectorIn , uint32_t* vectorOut , uint32_t longitud , uint32_t escalar);
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void CprodEsc32(uint32_t* vectorIn , uint32_t* vectorOut , uint32_t longitud , uint32_t escalar)
+{
+	for(uint8_t i = 0 ; i < longitud ; i++)
+	{
+		vectorOut[i] = vectorIn[i]*escalar;
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -96,8 +101,8 @@ int main(void)
   uint32_t largo = 10;
   uint32_t multip = 5;
 
-  //CprodEsc32(vectorIn , vectorOut , largo , multip);
-  asmprodEsc32(vectorIn , vectorOut , largo , multip);
+  CprodEsc32(vectorIn , vectorOut , largo , multip);
+  //asmprodEsc32(vectorIn , vectorOut , largo , multip);
   /* USER CODE END 2 */
 
   /* Infinite loop */

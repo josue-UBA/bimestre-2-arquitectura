@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "ejercicio.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,8 +51,9 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-void zerosEnC(uint32_t *, uint32_t);
-extern uint32_t asmSum(uint32_t *, uint32_t);
+extern void asmprodEsc32(uint32_t* vectorIn , uint32_t* vectorOut , uint32_t longitud , uint32_t escalar);
+void CprodEsc32(uint32_t* vectorIn , uint32_t* vectorOut , uint32_t longitud , uint32_t escalar);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/

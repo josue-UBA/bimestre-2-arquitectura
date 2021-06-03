@@ -51,8 +51,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-void zerosEnC(uint32_t *, uint32_t);
-extern uint32_t asmSum(uint32_t *, uint32_t);
+extern uint32_t ejercicio_s(uint16_t* vectorIn , uint16_t* vectorOut , uint16_t longitud , uint16_t escalar);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -97,8 +96,8 @@ int main(void)
   uint16_t ASMvectorOut[10];
   uint16_t largo = 10;
   uint16_t multip = 2;
-  CprodEsc12(CvectorIn , CvectorOut , largo , multip);
-  //asmprodEsc12(ASMvectorIn , ASMvectorOut , largo , multip);
+  //ejercicio_c(CvectorIn , CvectorOut , largo , multip);
+  ejercicio_s(ASMvectorIn , ASMvectorOut , largo , multip);
 
   /* USER CODE END 2 */
 

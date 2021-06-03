@@ -49,7 +49,7 @@
 	 * es decir que podemos verlo desde otros modulos (equivalente a extern).
      * Definimos la rutina como global para que sea visible desde otros modulos.
      */
-	.global asmprodEsc32
+	.global ejercicio_s
 //	.type asmSum function
 
 #define vectorIn 		r0
@@ -77,7 +77,7 @@
  *	Si el resultado que retorna es en 64 bits, usa r0 y r1.
 */
 
-asmprodEsc12:
+ejercicio_s:
     push {r4-r6,lr}  /* guardamos la direccion de retorno en la pila */
 
     MOV indice_vector,0

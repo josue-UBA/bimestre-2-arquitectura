@@ -51,34 +51,24 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-extern void ejercicio_s(int32_t*, int16_t*, uint32_t);
-void ejercicio_c(int32_t*, int16_t*, uint32_t);
+extern uint32_t ASMbuscarMax(int32_t *, uint32_t);
+uint32_t CbuscarMax(int32_t *, uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void ejercicio_c(int32_t* vectorIn , int16_t* vectorOut , uint32_t longitud)
+uint32_t CbuscarMax(int32_t * vectorIn , uint32_t longitud)
 {
-	static int16_t val16lim_sup = 32767;
-	static int16_t val16lim_inf = - 32768;
-
-	for (uint32_t i = 0 ; i< longitud ; i++)
-	{
-		if(vectorIn[i] > val16lim_sup)
-		{
-			vectorOut[i] = val16lim_sup;
-		}
-		else if(vectorIn[i] < val16lim_inf)
-		{
-			vectorOut[i] = val16lim_inf;
-		}
-		else
-		{
-			vectorOut[i] = vectorIn[i];
-		}
-	}
+  uint32_t bufferMax = 0;
+  for(uint8_t i = 0 ; i < longitud ; i++)
+  {
+    if (vectorIn[i] > vectorIn[bufferMax])
+    {
+      bufferMax = i;
+    }
+  }
+  return bufferMax;
 }
-
 /* USER CODE END 0 */
 
 /**
@@ -111,12 +101,11 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  int32_t vectorIn[10] = {130000,-103000,50000,-43000,-10,123,1,1,1,1};
-  int16_t vectorOut[10];
+  int32_t CvectorIn[10] = {37,-103000,130000,-43000,-10,123,1,1,1,1};
+  int32_t ASMvectorIn[10] = {1,10,20,-5,-7,123,-6,1,1,1};
   uint32_t largo = 10;
-  //ejercicio_c(vectorIn , vectorOut , largo);
-  ejercicio_s(vectorIn , vectorOut , largo);
-
+  //uint32_t Cindice = CbuscarMax(CvectorIn , largo);
+  uint32_t ASMindice = ASMbuscarMax(ASMvectorIn , largo);
   /* USER CODE END 2 */
 
   /* Infinite loop */

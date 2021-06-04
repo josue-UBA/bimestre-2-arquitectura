@@ -55,10 +55,9 @@
 #define vectorIn 		r0
 #define vectorOut 		r1
 #define longitud 		r2
-#define escalar 		r3
-#define indice			r4
-#define reg_buffer 		r5
-#define indice_vector 	r6
+#define indice_vector	r3
+#define reg_buffer 		r4
+
 
 	/**
 	 * Indicamos que la siguiente subrutina debe ser ensamblada en modo thumb,
@@ -78,18 +77,14 @@
 */
 
 ejercicio_s:
-    push {r4-r6,lr}  /* guardamos la direccion de retorno en la pila */
-
+    push {r4,lr}  /* guardamos la direccion de retorno en la pila */
     MOV indice_vector,0
-    MOV indice,0
 
 loop:
-    LDRH 	reg_buffer,[vectorIn,indice_vector, LSL 1]
-	MUL		reg_buffer,reg_buffer, escalar
-	USAT	reg_buffer,#12,reg_buffer
+    LDR 	reg_buffer,[vectorIn,indice_vector, LSL 2]
+	SSAT	reg_buffer,#16,reg_buffer
    	STRH	reg_buffer, [vectorOut, indice_vector, LSL 1]
    	ADD		indice_vector, 1
    	CMP 	indice_vector,longitud
    	BNE 	loop
-	POP {r4-r6,pc}   /* retorno */
-
+	POP {r4,pc}   /* retorno */

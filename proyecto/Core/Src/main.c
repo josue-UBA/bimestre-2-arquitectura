@@ -51,25 +51,34 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-extern void ejercicio_s(uint16_t* vectorIn , uint16_t* vectorOut , uint16_t longitud , uint16_t escalar);
-void ejercicio_c(uint16_t* vectorIn , uint16_t* vectorOut , uint16_t longitud , uint16_t escalar);
+extern void ejercicio_s(int32_t*, int16_t*, uint32_t);
+void ejercicio_c(int32_t*, int16_t*, uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void ejercicio_c(uint16_t* vectorIn , uint16_t* vectorOut , uint16_t longitud , uint16_t escalar)
+void ejercicio_c(int32_t* vectorIn , int16_t* vectorOut , uint32_t longitud)
 {
-  int a0 = 0;
-  for (uint16_t i = 0 ; i< longitud ; i++)
-  {
-    vectorOut[i] = escalar*vectorIn[i];
-    a0 = vectorOut[i];
-    if(vectorOut[i] > 4095)
-    {
-      vectorOut[i] = 4095;
-    }
-  }
+	static int16_t val16lim_sup = 32767;
+	static int16_t val16lim_inf = - 32768;
+
+	for (uint32_t i = 0 ; i< longitud ; i++)
+	{
+		if(vectorIn[i] > val16lim_sup)
+		{
+			vectorOut[i] = val16lim_sup;
+		}
+		else if(vectorIn[i] < val16lim_inf)
+		{
+			vectorOut[i] = val16lim_inf;
+		}
+		else
+		{
+			vectorOut[i] = vectorIn[i];
+		}
+	}
 }
+
 /* USER CODE END 0 */
 
 /**
@@ -102,13 +111,11 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
-  uint16_t vectorIn[10] = {6000,1,1,1,1,1,1,1,1,1};
-  uint16_t vectorOut[10];
-  uint16_t largo = 10;
-  uint16_t multip = 2;
-  //ejercicio_c(vectorIn , vectorOut , largo , multip);
-  //ejercicio_s(vectorIn , vectorOut , largo , multip);
+  int32_t vectorIn[10] = {130000,-103000,50000,-43000,-10,123,1,1,1,1};
+  int16_t vectorOut[10];
+  uint32_t largo = 10;
+  //ejercicio_c(vectorIn , vectorOut , largo);
+  ejercicio_s(vectorIn , vectorOut , largo);
 
   /* USER CODE END 2 */
 

@@ -32,6 +32,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define DELAY_MS 500
+#define LED 0
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -51,23 +53,19 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-extern uint32_t ASMbuscarMax(int32_t *, uint32_t);
-uint32_t CbuscarMax(int32_t *, uint32_t);
+extern void funcion_s(int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N);
+void funcion_c(int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint32_t CbuscarMax(int32_t * vectorIn , uint32_t longitud)
+void funcion_c(int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N)
 {
-  uint32_t bufferMax = 0;
+  uint8_t j = 1;
   for(uint8_t i = 0 ; i < longitud ; i++)
   {
-    if (vectorIn[i] > vectorIn[bufferMax])
-    {
-      bufferMax = i;
-    }
+    (i == (j*N)) ? (vectorOut[i] = 0 , j++) : (vectorOut[i] = vectorIn[i]);
   }
-  return bufferMax;
 }
 /* USER CODE END 0 */
 
@@ -102,10 +100,13 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   int32_t CvectorIn[10] = {37,-103000,130000,-43000,-10,123,1,1,1,1};
+  int32_t CvectorOut[10];
   int32_t ASMvectorIn[10] = {1,10,20,-5,-7,123,-6,1,1,1};
+  int32_t ASMvectorOut[10];
   uint32_t largo = 10;
-  //uint32_t Cindice = CbuscarMax(CvectorIn , largo);
-  uint32_t ASMindice = ASMbuscarMax(ASMvectorIn , largo);
+  uint8_t N = 3;
+  funcion_c(CvectorIn , CvectorOut , largo , N);
+  funcion_s(ASMvectorIn , ASMvectorOut , largo , N);
   /* USER CODE END 2 */
 
   /* Infinite loop */

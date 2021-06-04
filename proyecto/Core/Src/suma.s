@@ -49,15 +49,17 @@
 	 * es decir que podemos verlo desde otros modulos (equivalente a extern).
      * Definimos la rutina como global para que sea visible desde otros modulos.
      */
-	.global ASMbuscarMax
+	.global funcion_s
 //	.type asmSum function
 
 #define vectorIn 		r0
-#define longitud 		r1
-#define indice_vector	r2
-#define n_max	 		r3
-#define reg_buffer 		r4
-#define reg_max 		r5
+#define vectorOut 		r1
+#define longitud 		r2
+#define Nmuestra 		r3
+#define indice_vector	r4
+#define indice_j		r5
+#define reg_buffer		r6
+#define MULT_N			r7
 
 	/**
 	 * Indicamos que la siguiente subrutina debe ser ensamblada en modo thumb,
@@ -76,21 +78,22 @@
  *	Si el resultado que retorna es en 64 bits, usa r0 y r1.
 */
 
-
-ASMbuscarMax:
-    push {r4-r5,lr}  /* guardamos la direccion de retorno en la pila */
+funcion_s:
+    push {r4-r7,lr}  /* guardamos la direccion de retorno en la pila */
     MOV 	indice_vector,0
-    MOV		reg_max,0
-    MOV		n_max,0
+	MOV		indice_j,1
+	MUL		MULT_N,Nmuestra,indice_j
 
 loop:
     LDR 	reg_buffer,[vectorIn,indice_vector, LSL 2]
-    LDR 	reg_max,[vectorIn,n_max, LSL 2]
-	CMP		reg_buffer,reg_max
-	IT		GT
-	MOVGT	n_max,indice_vector
+ 	CMP		MULT_N,indice_vector
+	ITTTE	EQ
+	MOVEQ	reg_buffer,0
+	STREQ	reg_buffer,[vectorOut,indice_vector, LSL 2]
+	ADDEQ	indice_j,1
+	STRNE	reg_buffer,[vectorOut,indice_vector, LSL 2]
+	MUL		MULT_N,Nmuestra,indice_j
    	ADD		indice_vector, 1
    	CMP 	indice_vector,longitud
    	BNE 	loop
-   	MOV		r0,n_max
-	POP {r4-r5,pc}   /* retorno */
+	POP {r4-r7,pc}   /* retorno */

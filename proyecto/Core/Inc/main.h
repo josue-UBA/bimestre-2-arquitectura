@@ -32,8 +32,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#define DELAY_MS 500
-#define LED 0
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

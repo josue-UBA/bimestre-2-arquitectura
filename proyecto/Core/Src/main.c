@@ -53,19 +53,22 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-extern void funcion_s(int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N);
-void funcion_c(int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N);
+extern void ejercicio_s(uint16_t * vectorIn, uint32_t longitud);
+void ejercicio_c(uint16_t * vectorIn, uint32_t longitud);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void funcion_c(int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N)
+
+void ejercicio_c(uint16_t * vectorIn, uint32_t longitud)
 {
-  uint8_t j = 1;
-  for(uint8_t i = 0 ; i < longitud ; i++)
-  {
-    (i == (j*N)) ? (vectorOut[i] = 0 , j++) : (vectorOut[i] = vectorIn[i]);
-  }
+	uint16_t buffer[longitud];
+
+	for(uint8_t i = 0 ; i < longitud ; i++)
+	{
+		buffer[(longitud-1)-i] = vectorIn[i];
+	}
 }
 /* USER CODE END 0 */
 
@@ -99,14 +102,12 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  int32_t CvectorIn[10] = {37,-103000,130000,-43000,-10,123,1,1,1,1};
-  int32_t CvectorOut[10];
-  int32_t ASMvectorIn[10] = {1,10,20,-5,-7,123,-6,1,1,1};
-  int32_t ASMvectorOut[10];
+  uint16_t CvectorIn[10] = {1,2,3,4,5,6,7,8,9,10};
+  uint16_t ASMvectorIn[10] = {1,2,3,4,5,6,7,8,9,10};
+  uint16_t ASMvectorOut[10];
   uint32_t largo = 10;
-  uint8_t N = 3;
-  funcion_c(CvectorIn , CvectorOut , largo , N);
-  funcion_s(ASMvectorIn , ASMvectorOut , largo , N);
+  ejercicio_c(CvectorIn, largo);
+  ejercicio_s(ASMvectorIn, largo);
   /* USER CODE END 2 */
 
   /* Infinite loop */

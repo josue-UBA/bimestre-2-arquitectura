@@ -52,14 +52,14 @@
 	.global ejercicio_s
 //	.type asmSum function
 
-#define vectorIn 			r0
-#define longitud 			r1
-#define indice_vector		r2
-#define indice_vectorOut	r3
-#define reg_buffer			r4
-#define reg_buffer2			r5
-#define divisor				r6
-#define mult				r7
+#define vectorIn 			r0 /* ya guardado */
+#define longitud 			r1 /* ya guardado */
+#define i					r2
+#define indice_inv			r3
+#define aux_1				r4
+#define aux_2				r5
+#define half_longitud		r6
+#define div					r7
 
 
 	/**
@@ -79,22 +79,27 @@
  *	Si el resultado que retorna es en 64 bits, usa r0 y r1.
 */
 
-ejercicio_s:
-    push {r4-r7,lr}  /* guardamos la direccion de retorno en la pila */
-    MOV 	indice_vector,0
-	MOV		indice_vectorOut,longitud
-	SUB		indice_vectorOut,1
-	MOV		divisor,2
-	UDIV	mult,longitud,divisor
 
+/* mi intento */
+
+ejercicio_s:
+    push {r4-r7,lr}  //uardamos la direccion de retorno en la pila
+    MOV 	i,0
+	MOV		indice_inv,0 //aqui esta lo que yo llamo indice_inv (= indice_vectorOut)
+	MOV 	aux_1,0
+	MOV 	aux_2,0
+	MOV 	div,2
+	UDIV	half_longitud,longitud,div
 
 loop:
-    LDRH 	reg_buffer,[vectorIn,indice_vector, LSL 1]
-	LDRH	reg_buffer2,[vectorIn,indice_vectorOut, LSL 1]
-	STRH	reg_buffer,[vectorIn,indice_vectorOut, LSL 1]
-	STRH	reg_buffer2,[vectorIn,indice_vector, LSL 1]
-	SUB		indice_vectorOut,indice_vectorOut,1
-   	ADD		indice_vector, 1
-   	CMP 	indice_vector,mult
-   	BNE 	loop
-	POP {r4-r7,pc}   /* retorno */
+	MOV		indice_inv,longitud  //aqui esta lo que yo llamo indice_inv (= indice_vectorOut)
+	SUB		indice_inv,1
+	SUB		indice_inv,i
+    LDRH 	aux_1,[vectorIn,i, LSL 1]
+    LDRH 	aux_2,[vectorIn,indice_inv, LSL 1]
+	STRH	aux_1,[vectorIn,indice_inv, LSL 1]
+	STRH	aux_2,[vectorIn,i, LSL 1]
+	ADD 	i,1
+	CMP		i,half_longitud
+	BNE		loop
+	POP {r4-r7,pc}

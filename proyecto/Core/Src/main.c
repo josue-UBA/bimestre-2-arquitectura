@@ -63,11 +63,18 @@ void ejercicio_c(uint16_t * vectorIn, uint32_t longitud);
 
 void ejercicio_c(uint16_t * vectorIn, uint32_t longitud)
 {
-	uint16_t buffer[longitud];
-
-	for(uint8_t i = 0 ; i < longitud ; i++)
+	uint16_t aux_1;
+	uint16_t aux_2;
+	int half_longitud = longitud / 2;
+	int indice_inv;
+	//uint16_t buffer[longitud];
+	for(uint8_t i = 0 ; i < longitud / 2 ; i++)
 	{
-		buffer[(longitud-1)-i] = vectorIn[i];
+		indice_inv = (longitud-1)-i;
+		aux_1 = vectorIn[i];
+		aux_2 = vectorIn[indice_inv];
+		vectorIn[i] = aux_2;
+		vectorIn[(longitud-1)-i] = aux_1;
 	}
 }
 /* USER CODE END 0 */
@@ -102,12 +109,10 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  uint16_t CvectorIn[10] = {1,2,3,4,5,6,7,8,9,10};
-  uint16_t ASMvectorIn[10] = {1,2,3,4,5,6,7,8,9,10};
-  uint16_t ASMvectorOut[10];
-  uint32_t largo = 10;
-  ejercicio_c(CvectorIn, largo);
-  ejercicio_s(ASMvectorIn, largo);
+  uint16_t vectorIn[10] = {1,2,3,4,5,6,7,8,9,10};
+  uint32_t largo = sizeof(vectorIn) / sizeof( vectorIn[0] );
+  //ejercicio_c(vectorIn, largo);
+  ejercicio_s(vectorIn, largo);
   /* USER CODE END 2 */
 
   /* Infinite loop */

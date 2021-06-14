@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,30 +53,45 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-extern void ejercicio_s(uint16_t * vectorIn, uint32_t longitud);
-void ejercicio_c(uint16_t * vectorIn, uint32_t longitud);
+extern void ejercicio_s(uint16_t *, uint16_t *, uint32_t, uint16_t);
+void ejercicio_c(uint16_t *, uint16_t *, uint32_t, uint16_t);
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void ejercicio_c(uint16_t * vectorIn, uint32_t longitud)
+void ejercicio_c(uint16_t * vectorIn, uint16_t * vectorAux, uint32_t longitud, uint16_t tam)
 {
-	uint16_t aux_1;
-	uint16_t aux_2;
-	int half_longitud = longitud / 2;
-	int indice_inv;
-	//uint16_t buffer[longitud];
-	for(uint8_t i = 0 ; i < longitud / 2 ; i++)
+	/* tam: numero de elementos sin ser afectados por el eco */
+	uint16_t aux_1 = 0;
+	uint16_t aux_2 = 0;
+	uint16_t aux_3 = 0;
+	uint32_t i = 0;
+	for(i = 0; i < longitud; i++)
 	{
-		indice_inv = (longitud-1)-i;
 		aux_1 = vectorIn[i];
-		aux_2 = vectorIn[indice_inv];
-		vectorIn[i] = aux_2;
-		vectorIn[(longitud-1)-i] = aux_1;
+		vectorAux[i]=aux_1;
+	}
+	for(i = 0 ; i < longitud ; i++)
+	{
+		if(i >= tam)
+		{
+			aux_3 = i - tam;
+			aux_2 = vectorIn[i];
+			aux_1 = vectorAux[(aux_3)];
+			aux_1 = aux_1 / 2;
+			vectorIn[i] = aux_1 + aux_2;
+
+			//printf("vectorIn[%d] = vectorIn[(%d)]/2 + vectorIn[%d]\n\r",i,(int)aux_3,i);
+			printf("vectorIn[%d] = %d + %d \n\r",i,(int)aux_1,(int)aux_2);
+			printf("numero %d\n\r",vectorIn[i] );
+			//printf("vectorIn[%d] valida %d. Ahora tendra alojado el numero %d\n\r",i,aux_2,vectorIn[i]);
+		}
 	}
 }
+
+
 /* USER CODE END 0 */
 
 /**
@@ -109,10 +124,11 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  uint16_t vectorIn[10] = {1,2,3,4,5,6,7,8,9,10};
-  uint32_t largo = sizeof(vectorIn) / sizeof( vectorIn[0] );
-  //ejercicio_c(vectorIn, largo);
-  ejercicio_s(vectorIn, largo);
+  uint16_t vectorIn[7] = {4,4,4,4,4,4,4};
+  uint16_t vectorAux[7];
+  uint32_t largo = 7;//sizeof(vectorIn) / sizeof( vectorIn[0] );
+  //ejercicio_c(vectorIn, vectorAux, largo, 2);
+  ejercicio_s(vectorIn, vectorAux, largo, 2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -246,6 +262,23 @@ void zeroEnC(uint32_t * vector, uint32_t longitud)
     vector[i]=0;
     i++;
   }
+}
+int __io_putchar(int ch)
+{
+ uint8_t c[1];
+ c[0] = ch & 0x00FF;
+ HAL_UART_Transmit(&huart2, &*c, 1, 10);
+ return ch;
+}
+
+int _write(int file,char *ptr, int len)
+{
+ int DataIdx;
+ for(DataIdx= 0; DataIdx< len; DataIdx++)
+ {
+ __io_putchar(*ptr++);
+ }
+return len;
 }
 
 /* USER CODE END 4 */

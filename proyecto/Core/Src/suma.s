@@ -52,14 +52,23 @@
 	.global ejercicio_s
 //	.type asmSum function
 
-#define vectorIn 			r0 /* ya guardado */
-#define longitud 			r1 /* ya guardado */
-#define i					r2
-#define indice_inv			r3
-#define aux_1				r4
-#define aux_2				r5
-#define half_longitud		r6
-#define div					r7
+#define vectorIn 			r0
+#define vectorAux			r1
+#define longitud 			r2
+#define tam					r3
+
+#define i 					r4
+#define aux_1				r5
+#define aux_2				r6
+#define aux_3				r7
+
+
+
+/*
+#define indice_eco			r4
+#define reg_D1_D2			r5
+#define reg_eco_D1_D2		r6
+*/
 
 
 	/**
@@ -83,23 +92,37 @@
 /* mi intento */
 
 ejercicio_s:
-    push {r4-r7,lr}  //uardamos la direccion de retorno en la pila
-    MOV 	i,0
-	MOV		indice_inv,0 //aqui esta lo que yo llamo indice_inv (= indice_vectorOut)
-	MOV 	aux_1,0
-	MOV 	aux_2,0
-	MOV 	div,2
-	UDIV	half_longitud,longitud,div
+    push {r4-r6,lr}  /* guardamos la direccion de retorno en la pila */
 
-loop:
-	MOV		indice_inv,longitud  //aqui esta lo que yo llamo indice_inv (= indice_vectorOut)
-	SUB		indice_inv,1
-	SUB		indice_inv,i
-    LDRH 	aux_1,[vectorIn,i, LSL 1]
-    LDRH 	aux_2,[vectorIn,indice_inv, LSL 1]
-	STRH	aux_1,[vectorIn,indice_inv, LSL 1]
-	STRH	aux_2,[vectorIn,i, LSL 1]
+    MOV 	i,0
+    MOV		aux_1,0
+    MOV		aux_2,0
+    MOV		aux_3,0
+loop1:
+	LDR 	aux_1,[vectorIn ,i, LSL 1]
+    STR		aux_1,[vectorAux,i, LSL 1]
 	ADD 	i,1
-	CMP		i,half_longitud
-	BNE		loop
+	CMP 	i, longitud
+	BNE 	loop1
 	POP {r4-r7,pc}
+
+/*
+loop0:
+    LDR 	reg_D1_D2,[vectorIn,indice_vector, LSL 2]
+    STR		reg_D1_D2,[vectorOut,indice_vector, LSL 2]
+    ADD		indice_vector, 1
+    CMP		indice_eco,indice_vector
+    BNE 	loop0
+    MOV 	indice_vector,0
+loop1:
+    LDR 	reg_D1_D2,[vectorIn,indice_vector, LSL 2]
+	MOV		reg_eco_D1_D2,0
+	SHADD16	reg_D1_D2,reg_D1_D2,reg_eco_D1_D2
+    LDR		reg_eco_D1_D2,[vectorIn,indice_eco, LSL 2]
+	QADD16	reg_eco_D1_D2,reg_eco_D1_D2,reg_D1_D2
+    STR		reg_eco_D1_D2,[vectorOut,indice_eco, LSL 2]
+   	ADD		indice_vector, 1
+   	ADD		indice_eco, 1
+    CMP 	indice_eco,longitud
+   	BNE 	loop1
+	POP {r4-r6,pc}  */

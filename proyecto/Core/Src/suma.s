@@ -52,26 +52,17 @@
 	.global ejercicio_s
 //	.type asmSum function
 
-#define vectorIn 			r0
-#define vectorAux			r1
-#define longitud 			r2
-#define tam					r3
-
-#define i 					r4
-#define aux_1				r5
-#define aux_2				r6
-#define aux_3				r7
-#define div					r8
 
 
+#define func1			r0
+#define size			r1
+#define n_samples		r2
+#define delta_samples	r3
 
-/*
-#define indice_eco			r4
-#define reg_D1_D2			r5
-#define reg_eco_D1_D2		r6
-*/
-
-
+#define i				r4
+#define aux_1			r5
+#define aux_2			r6
+#define aux_3			r7
 	/**
 	 * Indicamos que la siguiente subrutina debe ser ensamblada en modo thumb,
 	 * entonces en las direcciones en el ultimo bit tendran el 1 para que se reconozcan como en modo thumb.
@@ -93,34 +84,31 @@
 /* mi intento */
 
 ejercicio_s:
-    push {r4-r8,lr}  /* guardamos la direccion de retorno en la pila */
+    push {r4-r7,lr}  /* guardamos la direccion de retorno en la pila */
+    MOV i, delta_samples
+    MOV aux_1, 0
+    MOV aux_2, 0
+    ADD aux_2, n_samples, delta_samples
+    MOV aux_3, 0
 
-    MOV 	i,0
-    MOV		aux_1,0
-    MOV		aux_2,0
-    MOV		aux_3,0
-    MOV		div,2
-loop1:
-	LDRH 	aux_1,[vectorIn ,i, LSL 1]
-    STRH	aux_1,[vectorAux,i, LSL 1]
-	ADD 	i,1
-	CMP 	i, longitud
-	BNE 	loop1
-	UDIV	tam,tam,div
-	MOV		i,tam
-	UDIV	longitud,longitud,div
-	//SUB		longitud, 1
-loop2:
-	//ADD		aux_4,1
-	MOV		aux_1,i
-	SUB 	aux_1, tam
-	LDR 	aux_1,[vectorAux ,aux_1, LSL 2]
-	LDR 	aux_2,[vectorAux ,i, LSL 2]
-	MOV		aux_3,0
-	SHADD16 aux_1, aux_1, aux_3
-	QADD16 	aux_2,aux_2,aux_1
-	STR		aux_2, [vectorIn,i, LSL2]
-	ADD		i,1
-	CMP		i, longitud // (hay que ver como corregimos para que sea un (menor o igua) y no un (menor)
-	BNE		loop2
-	POP {r4-r8,pc}
+	CMP	size, aux_2
+	IT	LT
+	BLT comp_1_1
+	BGE comp_1_2
+comp_1_1:
+	MOV r0,1
+	POP {r4-r6,pc}
+comp_1_2:
+	CMP i, aux_2
+	IT	LT
+	BLT comp_2_1
+	BGE comp_2_2
+comp_2_1:
+	LDRH aux_3, [func1,i,LSL1]
+	ADD aux_1, aux_1, aux_3
+	ADD i, 1
+	B comp_1_2
+comp_2_2:
+	UDIV aux_1, aux_1, n_samples
+	MOV r0, aux_1
+	POP {r4-r7,pc}

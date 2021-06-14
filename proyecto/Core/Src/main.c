@@ -53,50 +53,27 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-extern void ejercicio_s(uint16_t *, uint16_t *, uint32_t, uint16_t);
-void ejercicio_c(uint16_t *, uint16_t *, uint32_t, uint16_t);
-
+extern void ejercicio_s(uint16_t *, uint8_t, uint8_t, uint8_t);
+uint16_t    ejercicio_c(uint16_t *, uint8_t, uint8_t, uint8_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void ejercicio_c(uint16_t * vectorIn, uint16_t * vectorAux, uint32_t longitud, uint16_t tam)
+uint16_t ejercicio_c (uint16_t *func1, uint8_t size, uint8_t n_samples, uint8_t delta_samples)
 {
-	/* tam: numero de elementos sin ser afectados por el eco */
-	uint16_t aux_1 = 0;
-	uint16_t aux_2 = 0;
-	uint16_t aux_3 = 0;
-	uint32_t i = 0;
-	for(i = 0; i < longitud; i++)
-	{
-		aux_1 = vectorIn[i];
-		vectorAux[i]=aux_1;
-	}
-	for(i = tam ; i < longitud ; i++){
-		aux_3 = i - tam;
-		aux_2 = vectorIn[i];
-		aux_1 = vectorAux[(aux_3)];
-		aux_1 = aux_1 / 2;
-		vectorIn[i] = aux_1 + aux_2;
-	}
-	/*
-	for(i = 0 ; i < longitud ; i++)
-	{
-		if(i >= tam)
-		{
-			aux_3 = i - tam;
-			aux_2 = vectorIn[i];
-			aux_1 = vectorAux[(aux_3)];
-			aux_1 = aux_1 / 2;
-			vectorIn[i] = aux_1 + aux_2;
+	int aux_1 = 0;
+	int aux_2 = n_samples + delta_samples;
+	int i = delta_samples;
 
-			//printf("vectorIn[%d] = vectorIn[(%d)]/2 + vectorIn[%d]\n\r",i,(int)aux_3,i);
-			printf("vectorIn[%d] = %d + %d \n\r",i,(int)aux_1,(int)aux_2);
-			printf("numero %d\n\r",vectorIn[i] );
-			//printf("vectorIn[%d] valida %d. Ahora tendra alojado el numero %d\n\r",i,aux_2,vectorIn[i]);
-		}
-	}*/
+	if(size < aux_2){
+		return 0;
+	}
+	for(;i<aux_2;i++){
+		aux_1 = aux_1 + func1[i];
+	}
+	aux_1 = aux_1 / n_samples;
+	return aux_1;
 }
 
 
@@ -133,10 +110,10 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   //uint32_t tam = 8;
-  uint16_t vectorIn[] = {4,4,4,4,4,4,4,4,4};
+  uint16_t vectorIn[] = {1,2,3,4,5,6,7,8,9,10};
   uint32_t largo = sizeof(vectorIn) / sizeof( vectorIn[0] );
-  uint16_t vectorAux[largo];
-  ejercicio_s(vectorIn, vectorAux, largo, 4);
+  ejercicio_s (vectorIn, largo, 3, 7);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */

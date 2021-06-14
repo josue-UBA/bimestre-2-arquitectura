@@ -106,16 +106,21 @@ loop1:
 	ADD 	i,1
 	CMP 	i, longitud
 	BNE 	loop1
+	UDIV	tam,tam,div
 	MOV		i,tam
+	UDIV	longitud,longitud,div
+	//SUB		longitud, 1
 loop2:
-	MOV		aux_3,i
-	SUB 	aux_3, tam
-	LDRH 	aux_2,[vectorIn ,i, LSL 1]
-	LDRH 	aux_1,[vectorAux ,aux_3, LSL 1]
-	UDIV	aux_1,aux_1,div
-	ADD		aux_2, aux_1, aux_2
-	STRH	aux_2,[vectorIn,i, LSL 1]
+	//ADD		aux_4,1
+	MOV		aux_1,i
+	SUB 	aux_1, tam
+	LDR 	aux_1,[vectorAux ,aux_1, LSL 2]
+	LDR 	aux_2,[vectorAux ,i, LSL 2]
+	MOV		aux_3,0
+	SHADD16 aux_1, aux_1, aux_3
+	QADD16 	aux_2,aux_2,aux_1
+	STR		aux_2, [vectorIn,i, LSL2]
 	ADD		i,1
-	CMP		i, longitud
+	CMP		i, longitud // (hay que ver como corregimos para que sea un (menor o igua) y no un (menor)
 	BNE		loop2
 	POP {r4-r8,pc}

@@ -133,10 +133,10 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   //uint32_t tam = 8;
-  uint16_t vectorIn[] = {10,10,10,4,4,4,4};
+  uint16_t vectorIn[] = {4,4,4,4,4,4,4,4,4};
   uint32_t largo = sizeof(vectorIn) / sizeof( vectorIn[0] );
   uint16_t vectorAux[largo];
-  ejercicio_s(vectorIn, vectorAux, largo, 5);
+  ejercicio_s(vectorIn, vectorAux, largo, 4);
   /* USER CODE END 2 */
 
   /* Infinite loop */

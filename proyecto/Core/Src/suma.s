@@ -61,6 +61,7 @@
 #define aux_1				r5
 #define aux_2				r6
 #define aux_3				r7
+#define div					r8
 
 
 
@@ -92,37 +93,29 @@
 /* mi intento */
 
 ejercicio_s:
-    push {r4-r6,lr}  /* guardamos la direccion de retorno en la pila */
+    push {r4-r8,lr}  /* guardamos la direccion de retorno en la pila */
 
     MOV 	i,0
     MOV		aux_1,0
     MOV		aux_2,0
     MOV		aux_3,0
+    MOV		div,2
 loop1:
-	LDR 	aux_1,[vectorIn ,i, LSL 1]
-    STR		aux_1,[vectorAux,i, LSL 1]
+	LDRH 	aux_1,[vectorIn ,i, LSL 1]
+    STRH	aux_1,[vectorAux,i, LSL 1]
 	ADD 	i,1
 	CMP 	i, longitud
 	BNE 	loop1
-	POP {r4-r7,pc}
-
-/*
-loop0:
-    LDR 	reg_D1_D2,[vectorIn,indice_vector, LSL 2]
-    STR		reg_D1_D2,[vectorOut,indice_vector, LSL 2]
-    ADD		indice_vector, 1
-    CMP		indice_eco,indice_vector
-    BNE 	loop0
-    MOV 	indice_vector,0
-loop1:
-    LDR 	reg_D1_D2,[vectorIn,indice_vector, LSL 2]
-	MOV		reg_eco_D1_D2,0
-	SHADD16	reg_D1_D2,reg_D1_D2,reg_eco_D1_D2
-    LDR		reg_eco_D1_D2,[vectorIn,indice_eco, LSL 2]
-	QADD16	reg_eco_D1_D2,reg_eco_D1_D2,reg_D1_D2
-    STR		reg_eco_D1_D2,[vectorOut,indice_eco, LSL 2]
-   	ADD		indice_vector, 1
-   	ADD		indice_eco, 1
-    CMP 	indice_eco,longitud
-   	BNE 	loop1
-	POP {r4-r6,pc}  */
+	MOV		i,tam
+loop2:
+	MOV		aux_3,i
+	SUB 	aux_3, tam
+	LDRH 	aux_2,[vectorIn ,i, LSL 1]
+	LDRH 	aux_1,[vectorAux ,aux_3, LSL 1]
+	UDIV	aux_1,aux_1,div
+	ADD		aux_2, aux_1, aux_2
+	STRH	aux_2,[vectorIn,i, LSL 1]
+	ADD		i,1
+	CMP		i, longitud
+	BNE		loop2
+	POP {r4-r8,pc}

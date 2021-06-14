@@ -73,6 +73,14 @@ void ejercicio_c(uint16_t * vectorIn, uint16_t * vectorAux, uint32_t longitud, u
 		aux_1 = vectorIn[i];
 		vectorAux[i]=aux_1;
 	}
+	for(i = tam ; i < longitud ; i++){
+		aux_3 = i - tam;
+		aux_2 = vectorIn[i];
+		aux_1 = vectorAux[(aux_3)];
+		aux_1 = aux_1 / 2;
+		vectorIn[i] = aux_1 + aux_2;
+	}
+	/*
 	for(i = 0 ; i < longitud ; i++)
 	{
 		if(i >= tam)
@@ -88,7 +96,7 @@ void ejercicio_c(uint16_t * vectorIn, uint16_t * vectorAux, uint32_t longitud, u
 			printf("numero %d\n\r",vectorIn[i] );
 			//printf("vectorIn[%d] valida %d. Ahora tendra alojado el numero %d\n\r",i,aux_2,vectorIn[i]);
 		}
-	}
+	}*/
 }
 
 
@@ -124,11 +132,11 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  uint16_t vectorIn[7] = {4,4,4,4,4,4,4};
-  uint16_t vectorAux[7];
-  uint32_t largo = 7;//sizeof(vectorIn) / sizeof( vectorIn[0] );
-  //ejercicio_c(vectorIn, vectorAux, largo, 2);
-  ejercicio_s(vectorIn, vectorAux, largo, 2);
+  //uint32_t tam = 8;
+  uint16_t vectorIn[] = {10,10,10,4,4,4,4};
+  uint32_t largo = sizeof(vectorIn) / sizeof( vectorIn[0] );
+  uint16_t vectorAux[largo];
+  ejercicio_s(vectorIn, vectorAux, largo, 5);
   /* USER CODE END 2 */
 
   /* Infinite loop */

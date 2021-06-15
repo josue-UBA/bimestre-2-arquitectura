@@ -112,7 +112,7 @@ int main(void)
   //uint32_t tam = 8;
   uint16_t vectorIn[] = {1,2,3,4,5,6,7,8,9,10};
   uint32_t largo = sizeof(vectorIn) / sizeof( vectorIn[0] );
-  ejercicio_s (vectorIn, largo, 3, 7);
+  ejercicio_s (vectorIn, largo, 4, 4);
 
   /* USER CODE END 2 */
 

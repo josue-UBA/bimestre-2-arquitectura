@@ -85,6 +85,10 @@
 
 ejercicio_s:
     push {r4-r7,lr}  /* guardamos la direccion de retorno en la pila */
+
+    ASR size,1
+	ASR n_samples,1
+	ASR delta_samples,1
     MOV i, delta_samples
     MOV aux_1, 0
     MOV aux_2, 0
@@ -104,11 +108,10 @@ comp_1_2:
 	BLT comp_2_1
 	BGE comp_2_2
 comp_2_1:
-	LDRH aux_3, [func1,i,LSL1]
-	ADD aux_1, aux_1, aux_3
+	LDR aux_3, [func1,i,LSL2]
+	UQADD16 aux_1, aux_1, aux_3
 	ADD i, 1
 	B comp_1_2
 comp_2_2:
-	UDIV aux_1, aux_1, n_samples
-	MOV r0, aux_1
+	UQSAX func1, aux_1, aux_1
 	POP {r4-r7,pc}

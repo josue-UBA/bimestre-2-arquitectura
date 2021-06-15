@@ -53,30 +53,32 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-extern void ejercicio_s(uint16_t *, uint8_t, uint8_t, uint8_t);
-uint16_t    ejercicio_c(uint16_t *, uint8_t, uint8_t, uint8_t);
+extern void ejercicio_s(uint8_t *, uint8_t *, uint32_t);
+void ejercicio_c(uint8_t *, uint8_t *, uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void ejercicio_c(uint8_t *vecIn, uint8_t *vecOut, uint32_t length) {
 
-uint16_t ejercicio_c (uint16_t *func1, uint8_t size, uint8_t n_samples, uint8_t delta_samples)
-{
 	int aux_1 = 0;
-	int aux_2 = n_samples + delta_samples;
-	int i = delta_samples;
+	int aux_2 = 0;
+	int aux_3 = 0;
+	int i = 0;
 
-	if(size < aux_2){
-		return 0;
+	for (; i < length; i++) {
+		aux_2 = vecIn[i];
+		aux_1 = aux_1 + aux_2;
 	}
-	for(;i<aux_2;i++){
-		aux_1 = aux_1 + func1[i];
+
+	aux_1 = aux_1 / length;
+	i = 0;
+	for (; i < length; i++) {
+		aux_2 = vecIn[i];
+		aux_3 = aux_2 - aux_1;
+		vecOut[i] = aux_3;
 	}
-	aux_1 = aux_1 / n_samples;
-	return aux_1;
 }
-
-
 /* USER CODE END 0 */
 
 /**
@@ -110,9 +112,11 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   //uint32_t tam = 8;
-  uint16_t vectorIn[] = {1,2,3,4,5,6,7,8,9,10};
+  uint8_t vectorIn[] = {10,2,1,7,4,6};
   uint32_t largo = sizeof(vectorIn) / sizeof( vectorIn[0] );
-  ejercicio_s (vectorIn, largo, 4, 4);
+  uint8_t vectorOut[largo];
+  ejercicio_s (vectorIn, vectorOut, largo);
+
 
   /* USER CODE END 2 */
 

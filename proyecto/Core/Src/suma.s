@@ -54,15 +54,14 @@
 
 
 
-#define func1			r0
-#define size			r1
-#define n_samples		r2
-#define delta_samples	r3
+#define vecIn		r0
+#define vecOut		r1
+#define length		r2
 
-#define i				r4
-#define aux_1			r5
-#define aux_2			r6
-#define aux_3			r7
+#define aux_1		r4
+#define aux_2		r5
+#define aux_3		r6
+#define i			r7
 	/**
 	 * Indicamos que la siguiente subrutina debe ser ensamblada en modo thumb,
 	 * entonces en las direcciones en el ultimo bit tendran el 1 para que se reconozcan como en modo thumb.
@@ -85,33 +84,34 @@
 
 ejercicio_s:
     push {r4-r7,lr}  /* guardamos la direccion de retorno en la pila */
-
-    ASR size,1
-	ASR n_samples,1
-	ASR delta_samples,1
-    MOV i, delta_samples
     MOV aux_1, 0
     MOV aux_2, 0
-    ADD aux_2, n_samples, delta_samples
-    MOV aux_3, 0
+    MOV i, 0
 
-	CMP	size, aux_2
+for_1:
+	CMP	i, length
 	IT	LT
 	BLT comp_1_1
 	BGE comp_1_2
 comp_1_1:
-	MOV r0,1
-	POP {r4-r6,pc}
+	LDRB aux_2,[vecIn,i,LSL 0]
+	ADD aux_1, aux_1, aux_2
+	ADD i,i,1
+	B for_1
 comp_1_2:
-	CMP i, aux_2
+	UDIV aux_1, aux_1, length
+	MOV i,0
+for_2:
+	CMP	i, length
 	IT	LT
 	BLT comp_2_1
 	BGE comp_2_2
 comp_2_1:
-	LDR aux_3, [func1,i,LSL2]
-	UQADD16 aux_1, aux_1, aux_3
-	ADD i, 1
-	B comp_1_2
+	LDRB aux_2,[vecIn,i,LSL 0]
+	MOV aux_3, aux_2
+	UQSUB8 aux_3, aux_3, aux_1
+	STRB aux_3,[vecOut,i,LSL 0]
+	ADD i,i,1
+	B for_2
 comp_2_2:
-	UQSAX func1, aux_1, aux_1
 	POP {r4-r7,pc}

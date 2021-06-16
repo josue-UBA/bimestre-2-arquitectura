@@ -112,10 +112,10 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   //uint32_t tam = 8;
-  uint8_t vectorIn[] = {10,2,1,7,4,6};
+  uint8_t vectorIn[] = {1,2,3,4,5,6,7,8,9,10,11,12};
   uint32_t largo = sizeof(vectorIn) / sizeof( vectorIn[0] );
   uint8_t vectorOut[largo];
-  ejercicio_s (vectorIn, vectorOut, largo);
+  ejercicio_c (vectorIn, vectorOut, largo);
 
 
   /* USER CODE END 2 */

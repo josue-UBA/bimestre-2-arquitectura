@@ -83,13 +83,13 @@
 /* mi intento */
 
 ejercicio_s:
-    push {r4-r7,lr}  /* guardamos la direccion de retorno en la pila */
+    push {r4-r7,lr}  			/* se guarda los registros r4 al r7 en el stack */
     MOV aux_1, 0
     MOV aux_2, 0
-    MOV aux_3, 4
+    MOV aux_3, 4				/* el registro aux_3 sera el divisor */
     MOV i, 0
-    UDIV length, length, aux_3
-    MOV aux_3, 0
+    UDIV length, length, aux_3	/* divido entre 4 el tamano del arreglo porque se va a autilizar instrucciones que operan bytes */
+    MOV aux_3, 0 				/* el registro aux_3 se llenara de 0s*/
 
 for_1:
 	CMP	i, length
@@ -97,10 +97,10 @@ for_1:
 	BLT comp_1_1
 	BGE comp_1_2
 comp_1_1:
-	LDR aux_2,[vecIn,i,LSL 2]
-	UQADD8 aux_1, aux_1, aux_2
-	USADA8 aux_1, aux_1, aux_3, aux_3
-	ADD i,i,1
+	LDR aux_2,[vecIn,i,LSL 2]			/* con esta instruccion estamos trayendo 4 numeros (int8_t) al registro aux_2 */
+	UQADD8 aux_1, aux_1, aux_2			/* se usa esta instruccion par asumar los bits de cada registro. el resultado de cada suma se satura. */
+	USADA8 aux_1, aux_1, aux_3, aux_3	/* se resta el registro aux_1 con aux_3 (este ultimo solo tiene bits 0). El resultado se suma con 0s del registro aux_3 y finalmente se pone en aux_1 */
+	ADD i,i,1							/* se suma 1 al valor de i. Ojo: i iterara hasta que tenga el valor del tamaño original del arreglo entre 4 */
 	B for_1
 comp_1_2:
 	MOV aux_3, 4
@@ -120,4 +120,4 @@ comp_2_1:
 	ADD i,i,1
 	B for_2
 comp_2_2:
-	POP {r4-r7,pc}
+	POP {r4-r7,pc}					/* se limpia el stack */

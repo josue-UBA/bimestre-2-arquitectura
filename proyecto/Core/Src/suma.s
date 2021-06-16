@@ -84,22 +84,22 @@
 
 ejercicio_s:
     push {r4-r7,lr}  /* guardamos la direccion de retorno en la pila */
-    MOV aux_1, 0
-    MOV aux_2, 0
-    MOV i, 0
+    MOV aux_1, 0		/* se inicializa con 0 */
+    MOV aux_2, 0		/* se inicializa con 0 */
+    MOV i, 0			/* se inicializa con 0 */
 
 for_1:
-	CMP	i, length
-	IT	LT
-	BLT comp_1_1
-	BGE comp_1_2
+	CMP	i, length		/* se compara con la longitud del arreglo */
+	IT	LT				/* de acuerdo a si es menor o mayor e igual... */
+	BLT comp_1_1		/* salta a comp_1_1 o... */
+	BGE comp_1_2		/* salta a comp_1_2 */
 comp_1_1:
-	LDRB aux_2,[vecIn,i,LSL 0]
-	ADD aux_1, aux_1, aux_2
+	LDRB aux_2,[vecIn,i,LSL 0]	/* se carga 8 bits desde la direccion base vecIn con desfase i*2 */
+	ADD aux_1, aux_1, aux_2		/* se suma aux_1 mas aux_2 y se pone en registro aux_1 */
 	ADD i,i,1
 	B for_1
 comp_1_2:
-	UDIV aux_1, aux_1, length
+	UDIV aux_1, aux_1, length	/* se hace division sin signo con la longitud del arreglo */
 	MOV i,0
 for_2:
 	CMP	i, length

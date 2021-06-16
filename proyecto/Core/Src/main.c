@@ -76,6 +76,12 @@ void ejercicio_c(uint8_t *vecIn, uint8_t *vecOut, uint32_t length) {
 	for (; i < length; i++) {
 		aux_2 = vecIn[i];
 		aux_3 = aux_2 - aux_1;
+		if(aux_3<0){
+			aux_3 = 0;
+		}
+		else if(aux_3>254){
+			aux_3 = 255;
+		}
 		vecOut[i] = aux_3;
 	}
 }
@@ -112,9 +118,10 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   //uint32_t tam = 8;
-  uint8_t vectorIn[] = {10,2,1,7,4,6};
+  uint8_t vectorIn[] = { 1,2,3,4,5,6,7,8,9,10,11,12};
   uint32_t largo = sizeof(vectorIn) / sizeof( vectorIn[0] );
   uint8_t vectorOut[largo];
+  //ejercicio_c (vectorIn, vectorOut, largo);
   ejercicio_s (vectorIn, vectorOut, largo);
 
 

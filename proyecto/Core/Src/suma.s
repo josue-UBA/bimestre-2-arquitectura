@@ -86,7 +86,10 @@ ejercicio_s:
     push {r4-r7,lr}  /* guardamos la direccion de retorno en la pila */
     MOV aux_1, 0
     MOV aux_2, 0
+    MOV aux_3, 4
     MOV i, 0
+    UDIV length, length, aux_3
+    MOV aux_3, 0
 
 for_1:
 	CMP	i, length
@@ -94,11 +97,14 @@ for_1:
 	BLT comp_1_1
 	BGE comp_1_2
 comp_1_1:
-	LDRB aux_2,[vecIn,i,LSL 0]
-	ADD aux_1, aux_1, aux_2
+	LDR aux_2,[vecIn,i,LSL 2]
+	UQADD8 aux_1, aux_1, aux_2
+	USADA8 aux_1, aux_1, aux_3, aux_3
 	ADD i,i,1
 	B for_1
 comp_1_2:
+	MOV aux_3, 4
+	MUL length, length, aux_3
 	UDIV aux_1, aux_1, length
 	MOV i,0
 for_2:
